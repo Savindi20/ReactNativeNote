@@ -5,114 +5,43 @@
  * @format
  */
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+import React, {useState} from 'react';
+import {SafeAreaView, Text, TextInput, TouchableOpacity} from 'react-native';
+import {CustomTitle} from './src/components/CustomTitle.tsx';
+// import styles, { styles2 } from "./src/styles/styles";
+// import { styles, styles2 } from "./src/styles/styles";
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  const [title, setTitle] = useState('IJSE');
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+    <SafeAreaView>
+      <TextInput
+        style={{borderColor: 'blue', borderWidth: 2, margin: 10}}
+        value={title}
+        onChange={val => {
+          setTitle(val.nativeEvent.text);
+        }}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={{backgroundColor: 'red'}}>
-        {/*<Header />*/}
-        <View
-          style={{
-            backgroundColor: 'black'
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+
+      <TouchableOpacity
+        onPress={() => {
+          setTitle('IJSE');
+        }}
+        style={{backgroundColor: 'blue', padding: 20}}>
+        <Text>Set IJSE to Title</Text>
+      </TouchableOpacity>
+
+      <CustomTitle title={title} subTitle={'this is sub 1'} />
+      <CustomTitle
+        title={'Hello Galle'}
+        subTitle={'this is sub 2'}
+        marginBottom={55}
+      />
+      <CustomTitle title={'Hello Panadura'} subTitle={'this is sub 3'} />
+      <CustomTitle title={'Hello Jaffna'} subTitle={'this is sub 4'} />
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
