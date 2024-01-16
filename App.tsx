@@ -10,6 +10,11 @@ import {SafeAreaView, ScrollView, TextInput} from 'react-native';
 import {CustomTitle} from './src/components/CustomTitle.tsx';
 import {SignUpForm} from './src/components/SignUpForm.tsx';
 import {CustomButton} from './src/components/CustomButton.tsx';
+import {
+  AsyncStorageKeys,
+  getDataFromAsyncStorage,
+  setDataToAsyncStorage,
+} from './src/util/AsyncStorageUtil.ts';
 // import styles, { styles2 } from "./src/styles/styles";
 // import { styles, styles2 } from "./src/styles/styles";
 
@@ -30,8 +35,9 @@ function App(): React.JSX.Element {
     console.log('Use Effect Called for Title Change');
   }, [title]);
 
-  const onSignUpFormAction = (text: string) => {
-    setTitle(text);
+  const onSignUpFormAction = async (text: string) => {
+    const title = await getDataFromAsyncStorage(AsyncStorageKeys.TITLE_KEY);
+    setTitle(title);
   };
 
   return (
@@ -48,6 +54,16 @@ function App(): React.JSX.Element {
             // your code here 1
             signUpFormRef.current.setFirstName('IJSE');
             signUpFormRef.current.setLastName('Sri Lanka');
+          }}
+        />
+
+        <CustomButton
+          label={'Set Something to Async Storage'}
+          onPress={async () => {
+            await setDataToAsyncStorage(
+              AsyncStorageKeys.TITLE_KEY,
+              'Test Title',
+            );
           }}
         />
 
