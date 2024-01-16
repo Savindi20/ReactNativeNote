@@ -1,6 +1,7 @@
 import {Text, View} from 'react-native';
 import React, {useReducer} from 'react';
 import {CustomInput} from './CustomInput.tsx';
+import {CustomButton} from './CustomButton.tsx';
 
 type FormState = {
   firstName: string;
@@ -64,6 +65,7 @@ export const SignUpForm = () => {
 
     lastName: '',
     lastNameError: null,
+
     address: '',
     addressError: null,
   });
@@ -99,6 +101,14 @@ export const SignUpForm = () => {
           dispatch({formFieldName: 'address', formFieldValue: val})
         }
         error={state.addressError}
+      />
+
+      <CustomButton
+        label={'Set Home Title as Software Engineer'}
+        onPress={() => {
+          // your code here 2
+          console.log('button 2 press');
+        }}
       />
     </View>
   );
