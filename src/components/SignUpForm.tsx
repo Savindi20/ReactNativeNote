@@ -1,5 +1,5 @@
 import {Text, View} from 'react-native';
-import React, {useReducer} from 'react';
+import React, {forwardRef, useImperativeHandle, useReducer} from 'react';
 import {CustomInput} from './CustomInput.tsx';
 import {CustomButton} from './CustomButton.tsx';
 
@@ -53,63 +53,76 @@ const formFieldSetReducer = (
   }
 };
 
-export const SignUpForm = () => {
-  // const [name, setName] = useState('');
-  // const [nameError, setNameError] = useState('');
+export const SignUpForm = forwardRef(
+  (props: {onSignUpFormAction: (text: string) => void}, ref) => {
+    // const [name, setName] = useState('');
+    // const [nameError, setNameError] = useState('');
 
-  const [state, dispatch] = useReducer<
-    (state: FormState, action: FormFieldSetAction) => FormState
-  >(formFieldSetReducer, {
-    firstName: '',
-    firstNameError: null,
+    useImperativeHandle(ref, () => {
+      return {
+        setFirstName: (text: string) => {
+          dispatch({formFieldName: 'firstName', formFieldValue: text});
+        },
+        setLastName: (text: string) => {
+          dispatch({formFieldName: 'lastName', formFieldValue: text});
+        },
+      };
+    });
 
-    lastName: '',
-    lastNameError: null,
+    const [state, dispatch] = useReducer<
+      (state: FormState, action: FormFieldSetAction) => FormState
+    >(formFieldSetReducer, {
+      firstName: '',
+      firstNameError: null,
 
-    address: '',
-    addressError: null,
-  });
+      lastName: '',
+      lastNameError: null,
 
-  return (
-    <View style={{backgroundColor: 'skyblue', marginVertical: 25}}>
-      <Text style={{fontWeight: 'bold', fontSize: 30, textAlign: 'center'}}>
-        Sign Up
-      </Text>
+      address: '',
+      addressError: null,
+    });
 
-      <CustomInput
-        label={'First Name'}
-        value={state.firstName}
-        onValueChange={val =>
-          dispatch({formFieldName: 'firstName', formFieldValue: val})
-        }
-        error={state.firstNameError}
-      />
+    return (
+      <View style={{backgroundColor: 'skyblue', marginVertical: 25}}>
+        <Text style={{fontWeight: 'bold', fontSize: 30, textAlign: 'center'}}>
+          Sign Up
+        </Text>
 
-      <CustomInput
-        label={'Last Name'}
-        value={state.lastName}
-        onValueChange={val =>
-          dispatch({formFieldName: 'lastName', formFieldValue: val})
-        }
-        error={state.lastNameError}
-      />
+        <CustomInput
+          label={'First Name'}
+          value={state.firstName}
+          onValueChange={val =>
+            dispatch({formFieldName: 'firstName', formFieldValue: val})
+          }
+          error={state.firstNameError}
+        />
 
-      <CustomInput
-        label={'Address'}
-        value={state.address}
-        onValueChange={val =>
-          dispatch({formFieldName: 'address', formFieldValue: val})
-        }
-        error={state.addressError}
-      />
+        <CustomInput
+          label={'Last Name'}
+          value={state.lastName}
+          onValueChange={val =>
+            dispatch({formFieldName: 'lastName', formFieldValue: val})
+          }
+          error={state.lastNameError}
+        />
 
-      <CustomButton
-        label={'Set Home Title as Software Engineer'}
-        onPress={() => {
-          // your code here 2
-          console.log('button 2 press');
-        }}
-      />
-    </View>
-  );
-};
+        <CustomInput
+          label={'Address'}
+          value={state.address}
+          onValueChange={val =>
+            dispatch({formFieldName: 'address', formFieldValue: val})
+          }
+          error={state.addressError}
+        />
+
+        <CustomButton
+          label={'Set Home Title as Software Engineer'}
+          onPress={() => {
+            // your code here 2
+            props.onSignUpFormAction('Software Engineer');
+          }}
+        />
+      </View>
+    );
+  },
+);

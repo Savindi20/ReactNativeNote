@@ -5,7 +5,7 @@
  * @format
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {createRef, useEffect, useState} from 'react';
 import {SafeAreaView, ScrollView, TextInput} from 'react-native';
 import {CustomTitle} from './src/components/CustomTitle.tsx';
 import {SignUpForm} from './src/components/SignUpForm.tsx';
@@ -15,6 +15,8 @@ import {CustomButton} from './src/components/CustomButton.tsx';
 
 function App(): React.JSX.Element {
   const [title, setTitle] = useState('IJSE');
+
+  const signUpFormRef = createRef<any>();
 
   // useEffect(() => {
   //   console.log('Use Effect Called for Every Change');
@@ -28,16 +30,24 @@ function App(): React.JSX.Element {
     console.log('Use Effect Called for Title Change');
   }, [title]);
 
+  const onSignUpFormAction = (text: string) => {
+    setTitle(text);
+  };
+
   return (
     <SafeAreaView>
       <ScrollView>
-        <SignUpForm />
+        <SignUpForm
+          ref={signUpFormRef}
+          onSignUpFormAction={onSignUpFormAction}
+        />
 
         <CustomButton
           label={'Set First Name as IJSE'}
           onPress={() => {
             // your code here 1
-            console.log('button 1 press');
+            signUpFormRef.current.setFirstName('IJSE');
+            signUpFormRef.current.setLastName('Sri Lanka');
           }}
         />
 
